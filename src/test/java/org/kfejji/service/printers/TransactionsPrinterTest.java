@@ -1,10 +1,9 @@
-package org.kfejji;
+package org.kfejji.service.printers;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.kfejji.domain.Operation;
 import org.kfejji.domain.Transaction;
-import org.kfejji.domain.TransactionPrinter;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 

@@ -2,15 +2,16 @@ package org.kfejji.domain;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.kfejji.service.printers.TransactionPrinter;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.verify;
 
 
@@ -18,6 +19,9 @@ public class AccountTest {
 
     @InjectMocks
     private Account account;
+
+    @Mock
+    private List<Transaction> transactions;
 
     @Mock
     private TransactionPrinter transactionPrinter;
@@ -74,12 +78,36 @@ public class AccountTest {
     }
 
     @Test
-    public void should_invoke_transaction_printer_print() {
+    public void should_store_deposit_transaction() {
+        //Given
+        BigDecimal depositAmount = BigDecimal.valueOf(200);
+
         //When
-        String transactionsHistory = account.printTransactionsHistory();
+        Transaction depositTransaction = account.deposit(depositAmount);
 
         //Then
-        verify(transactionPrinter).print(anyList());
+        verify(transactions).add(depositTransaction);
+    }
+
+    @Test
+    public void should_store_withdrawal_transaction() {
+        //Given
+        BigDecimal withdrawalAmount = BigDecimal.valueOf(100);
+
+        //When
+        Transaction withdrawTransaction = account.withdraw(withdrawalAmount);
+
+        //Then
+        verify(transactions).add(withdrawTransaction);
+    }
+
+    @Test
+    public void should_invoke_transaction_printer_print() {
+        //When
+        account.printTransactionsHistory();
+
+        //Then
+        verify(transactionPrinter).print(transactions);
     }
 
 }

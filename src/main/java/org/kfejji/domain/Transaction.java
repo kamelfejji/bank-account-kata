@@ -30,7 +30,8 @@ public class Transaction {
         this.afterOperationBalance = balance;
     }
 
-    public String print() {
+    @Override
+    public String toString() {
         return operation.getOperationType() + SEPARATOR
                 + dateFormatter.format(operation.getDate()) + SEPARATOR
                 + numberFormatter.format(operation.getAmount()) + SEPARATOR

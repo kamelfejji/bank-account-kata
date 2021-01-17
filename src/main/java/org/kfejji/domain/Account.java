@@ -1,38 +1,42 @@
 package org.kfejji.domain;
 
+import org.kfejji.service.printers.TransactionPrinter;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Account {
 
     private BigDecimal balance = BigDecimal.ZERO;
-    private final List<Transaction> transactions = new ArrayList<>();
+    private final List<Transaction> transactions;
     private final TransactionPrinter transactionPrinter;
 
-    public Account(TransactionPrinter transactionPrinter) {
+    public Account(TransactionPrinter transactionPrinter, List<Transaction> transactions) {
         this.transactionPrinter = transactionPrinter;
+        this.transactions = transactions;
     }
 
     public String printTransactionsHistory() {
         return transactionPrinter.print(transactions);
     }
 
-    public void withdraw(BigDecimal amount) {
+    public Transaction withdraw(BigDecimal amount) {
         requirePositiveAmount(amount);
         this.balance = balance.subtract(amount);
-        storeTransaction(Operation.ofWithdrawal(LocalDate.now(), amount), getBalance());
+        return storeTransaction(Operation.ofWithdrawal(LocalDate.now(), amount), getBalance());
     }
 
-    public void deposit(BigDecimal amount) {
+    public Transaction deposit(BigDecimal amount) {
         requirePositiveAmount(amount);
         this.balance = balance.add(amount);
-        storeTransaction(Operation.ofDeposit(LocalDate.now(), amount), getBalance());
+        return storeTransaction(Operation.ofDeposit(LocalDate.now(), amount), getBalance());
     }
 
-    private void storeTransaction(Operation operation, BigDecimal balance) {
-        transactions.add(Transaction.of(operation, balance));
+    private Transaction storeTransaction(Operation operation, BigDecimal balance) {
+        Transaction transaction = Transaction.of(operation, balance);
+        transactions.add(transaction);
+        return transaction;
     }
 
     private void requirePositiveAmount(BigDecimal amount) {

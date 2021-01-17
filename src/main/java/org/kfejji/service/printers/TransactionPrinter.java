@@ -1,4 +1,6 @@
-package org.kfejji.domain;
+package org.kfejji.service.printers;
+
+import org.kfejji.domain.Transaction;
 
 import java.util.List;
 import java.util.ListIterator;
@@ -12,7 +14,7 @@ public class TransactionPrinter {
         bankStatement.append(HEADER);
         ListIterator<Transaction> transactionsIterator = transactions.listIterator(transactions.size());
         while (transactionsIterator.hasPrevious()) {
-            bankStatement.append(transactionsIterator.previous().print()).append(" \n");
+            bankStatement.append(transactionsIterator.previous().toString()).append(" \n");
         }
         return bankStatement.toString();
     }
