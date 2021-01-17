@@ -54,29 +54,29 @@ public class AccountTest {
     }
 
     @Test
-    public void should_not_deposit_zero_amount() {
+    public void should_not_deposit_when_zero_amount() {
         assertThrows(IllegalArgumentException.class, () -> account.deposit(BigDecimal.valueOf(0)));
     }
 
     @Test
-    public void should_not_deposit_negative_amount() {
+    public void should_not_deposit_when_negative_amount() {
         assertThrows(IllegalArgumentException.class, () -> account.deposit(BigDecimal.valueOf(-50)));
     }
 
     @Test
-    public void should_not_withdraw_zero_amount() {
+    public void should_not_withdraw_when_zero_amount() {
         assertThrows(IllegalArgumentException.class, () -> account.withdraw(BigDecimal.valueOf(0)));
     }
 
     @Test
-    public void should_not_withdraw_negative_amount() {
+    public void should_not_withdraw_when_negative_amount() {
         assertThrows(IllegalArgumentException.class, () -> account.withdraw(BigDecimal.valueOf(-50)));
     }
 
     @Test
     public void should_invoke_transaction_printer_print() {
         //When
-        account.printTransactionsHistory();
+        String transactionsHistory = account.printTransactionsHistory();
 
         //Then
         verify(transactionPrinter).print(anyList());

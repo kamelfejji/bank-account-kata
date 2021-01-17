@@ -5,9 +5,9 @@ import java.time.LocalDate;
 
 public class Operation {
 
-    OperationType operationType;
-    LocalDate date;
-    BigDecimal amount;
+    private final OperationType operationType;
+    private final LocalDate date;
+    private final BigDecimal amount;
 
     public static Operation ofDeposit(LocalDate date, BigDecimal amount) {
         return new Operation(OperationType.DEPOSIT, date, amount);

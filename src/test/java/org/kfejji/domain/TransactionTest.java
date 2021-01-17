@@ -20,7 +20,7 @@ public class TransactionTest {
         final String transactionOutput = withdrawalTransaction.print();
 
         //Then
-        assertEquals("WITHDRAWAL | 7/01/2021 | 100,00 | 200,00", transactionOutput);
+        assertEquals(OperationType.WITHDRAWAL.name() + " | 7/01/2021 | 100,00 | 200,00", transactionOutput);
     }
 
     @Test
@@ -33,7 +33,7 @@ public class TransactionTest {
         final String transactionOutput = withdrawalTransaction.print();
 
         //Then
-        assertEquals("DEPOSIT | 14/01/2021 | 3 000,00 | 5 000,00", transactionOutput);
+        assertEquals(OperationType.DEPOSIT.name() + " | 14/01/2021 | 3 000,00 | 5 000,00", transactionOutput);
     }
 
 }
