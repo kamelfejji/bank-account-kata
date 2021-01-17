@@ -24,17 +24,16 @@ public class Account {
     public Transaction withdraw(BigDecimal amount) {
         requirePositiveAmount(amount);
         this.balance = balance.subtract(amount);
-        return storeTransaction(Operation.ofWithdrawal(LocalDate.now(), amount), getBalance());
+        return storeTransaction(Transaction.of(Operation.ofWithdrawal(LocalDate.now(), amount), getBalance()));
     }
 
     public Transaction deposit(BigDecimal amount) {
         requirePositiveAmount(amount);
         this.balance = balance.add(amount);
-        return storeTransaction(Operation.ofDeposit(LocalDate.now(), amount), getBalance());
+        return storeTransaction(Transaction.of(Operation.ofDeposit(LocalDate.now(), amount), getBalance()));
     }
 
-    private Transaction storeTransaction(Operation operation, BigDecimal balance) {
-        Transaction transaction = Transaction.of(operation, balance);
+    private Transaction storeTransaction(Transaction transaction) {
         transactions.add(transaction);
         return transaction;
     }
