@@ -1,11 +1,25 @@
 package org.kfejji.domain;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.time.format.DateTimeFormatter;
 
 public class Transaction {
 
-    final Operation operation;
-    final BigDecimal afterOperationBalance;
+    private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
+    private static final DecimalFormat numberFormatter;
+    private static final String SEPARATOR = " | ";
+
+    static {
+        DecimalFormatSymbols symbols = DecimalFormatSymbols.getInstance();
+        symbols.setGroupingSeparator(' ');
+        symbols.setDecimalSeparator(',');
+        numberFormatter = new DecimalFormat("#,###.00", symbols);
+    }
+
+    private final Operation operation;
+    private final BigDecimal afterOperationBalance;
 
     public static Transaction of(Operation operation, BigDecimal balance) {
         return new Transaction(operation, balance);
@@ -17,6 +31,9 @@ public class Transaction {
     }
 
     public String print() {
-        return "";
+        return operation.getOperationType() + SEPARATOR
+                + dateFormatter.format(operation.getDate()) + SEPARATOR
+                + numberFormatter.format(operation.getAmount()) + SEPARATOR
+                + numberFormatter.format(afterOperationBalance);
     }
 }

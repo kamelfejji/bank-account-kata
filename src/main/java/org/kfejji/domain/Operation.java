@@ -23,4 +23,16 @@ public class Operation {
         this.amount = amount;
     }
 
+    public OperationType getOperationType() {
+        return operationType;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public BigDecimal getAmount() {
+        return amount;
+    }
+
 }
