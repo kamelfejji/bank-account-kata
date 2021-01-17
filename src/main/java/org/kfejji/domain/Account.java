@@ -8,10 +8,15 @@ import java.util.List;
 public class Account {
 
     private BigDecimal balance = BigDecimal.ZERO;
-    private List<Transaction> transactions = new ArrayList<>();
+    private final List<Transaction> transactions = new ArrayList<>();
+    private final TransactionPrinter transactionPrinter;
+
+    public Account(TransactionPrinter transactionPrinter) {
+        this.transactionPrinter = transactionPrinter;
+    }
 
     public String printTransactionsHistory() {
-        return "";
+        return transactionPrinter.print(transactions);
     }
 
     public void withdraw(BigDecimal amount) {

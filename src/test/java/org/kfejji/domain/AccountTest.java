@@ -1,19 +1,30 @@
 package org.kfejji.domain;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import java.math.BigDecimal;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.Mockito.verify;
+
 
 public class AccountTest {
 
+    @InjectMocks
     private Account account;
 
-    @Before
+    @Mock
+    private TransactionPrinter transactionPrinter;
+
+    @BeforeEach
     public void init() {
-        account = new Account();
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test
@@ -42,44 +53,33 @@ public class AccountTest {
         assertEquals(initialBalance.subtract(withdrawalAmount), account.getBalance());
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void should_not_deposit_zero_amount() {
-
-        //Given
-        BigDecimal depositAmount = BigDecimal.valueOf(0);
-
-        //When
-        account.deposit(depositAmount);
+        assertThrows(IllegalArgumentException.class, () -> account.deposit(BigDecimal.valueOf(0)));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void should_not_deposit_negative_amount() {
-
-        //Given
-        BigDecimal depositAmount = BigDecimal.valueOf(-50);
-
-        //When
-        account.deposit(depositAmount);
+        assertThrows(IllegalArgumentException.class, () -> account.deposit(BigDecimal.valueOf(-50)));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void should_not_withdraw_zero_amount() {
-
-        //Given
-        BigDecimal depositAmount = BigDecimal.valueOf(0);
-
-        //When
-        account.withdraw(depositAmount);
+        assertThrows(IllegalArgumentException.class, () -> account.withdraw(BigDecimal.valueOf(0)));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void should_not_withdraw_negative_amount() {
+        assertThrows(IllegalArgumentException.class, () -> account.withdraw(BigDecimal.valueOf(-50)));
+    }
 
-        //Given
-        BigDecimal depositAmount = BigDecimal.valueOf(-50);
-
+    @Test
+    public void should_invoke_transaction_printer_print() {
         //When
-        account.withdraw(depositAmount);
+        account.printTransactionsHistory();
+
+        //Then
+        verify(transactionPrinter).print(anyList());
     }
 
 }
